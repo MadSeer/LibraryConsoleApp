@@ -34,9 +34,10 @@ public class Main {
                             1. Добавить книгу
                             2. Вывести всю информацию (ПОКА ЧТО ГОВНО)
                             3. Поиск по ID
-                            4. Поиск по автору
+                            4. Поиск по автору\s
                             5. Поиск по годам
-                            6. Поиск по названию
+                            6. Поиск по названию (Нужно добавить вывод ID)
+                            7. Удаление по ID (Нужно тестировать)
                             0. Выйти из программы
                             """);
 
@@ -59,6 +60,7 @@ public class Main {
                 case 4 -> book.searchByAuthor(titles,authors,years);
                 case 5 -> book.searchByYear(titles,authors,years);
                 case 6 -> book.searchByTitle(titles,authors,years);
+                case 7 -> book.deleteByID(bookID,titles,authors,years);
                 case 0 -> exit = true;
 
             }

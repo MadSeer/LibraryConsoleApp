@@ -136,5 +136,16 @@ public class BookInfo {
         }
     }
 
+    public void deleteByID(Map<Integer, String> bookID,
+                           LinkedList<String> titleList,
+                           LinkedList<String> authorList,
+                           LinkedList<Integer> yearList) throws IOException {
+        System.out.println("Введите ID книги которую желаете удалить");
+        id = Integer.parseInt(reader.readLine());
+        authorList.remove(titleList.indexOf(bookID.get(id)));
+        yearList.remove(titleList.indexOf(bookID.get(id)));
+        titleList.remove(titleList.indexOf(bookID.get(id)));
+        bookID.remove(id);
+    }
 
 }
