@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -25,18 +24,31 @@ public class BookInfo {
         id = Integer.parseInt(reader.readLine());
     }
 
-    public void searchByID(Map<Integer,String> bookID,
-                       LinkedList<String> title,
-                       LinkedList<String> author,
-                       LinkedList<Integer> year) throws IOException {
+    public void searchByID(Map<Integer, String> bookID,
+                           LinkedList<String> titleList,
+                           LinkedList<String> authorList,
+                           LinkedList<Integer> yearList) throws IOException {
         System.out.println("Введите ID");
         id = Integer.parseInt(reader.readLine());
-        if(bookID.containsKey(id)){
-            System.out.println("Автор: " + author.get(title.indexOf(bookID.get(id)))+
+        if (bookID.containsKey(id)) {
+            System.out.println("Автор: " + authorList.get(titleList.indexOf(bookID.get(id))) +
                     "\nКнига: " + bookID.get(id) +
-                    "\nГод: " + year.get(title.indexOf(bookID.get(id))));
+                    "\nГод: " + yearList.get(titleList.indexOf(bookID.get(id))));
         }
 
+
+    }
+
+    public void searchByAuthor(LinkedList<String> titleList,
+                               LinkedList<String> authorList,
+                               LinkedList<Integer> yearList) throws IOException {
+        System.out.println("Введите имя автора");
+        author = reader.readLine();
+        if (authorList.contains(author)){
+            System.out.println("Автор: " + author +
+                    "\nКниги: " + titleList.get(authorList.indexOf(author)) +
+                    "\nГод: " + yearList.get(authorList.indexOf(author)));
+        }
     }
 
 

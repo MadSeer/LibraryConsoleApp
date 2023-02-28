@@ -25,6 +25,7 @@ public class Main {
                             1. Добавить книгу
                             2. Вывести всю информацию (ПОКА ЧТО ГОВНО)
                             3. Поиск по ID
+                            4. Поиск по автору (ПОКА ЧТО ГОВНО)
                             0. Выйти из программы
                             """);
 
@@ -44,6 +45,7 @@ public class Main {
                     System.out.println(years);
                 }
                 case 3 -> book.searchByID(bookID,titles,authors,years);
+                case 4 -> book.searchByAuthor(titles,authors,years);
                 case 0 -> exit = true;
 
             }
