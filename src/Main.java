@@ -14,6 +14,15 @@ public class Main {
         LinkedList<Integer> years = new LinkedList<>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
+        System.out.println("Желаете подключить тестовую базу данных?(д/н)");
+        String testmode = reader.readLine();
+        if (testmode.equals("д") || testmode.equals("y")) {
+            TestDatabase db = new TestDatabase();
+            titles = db.createTitleDatabase(titles);
+            authors = db.createAuthorDatabase(authors);
+            years = db.createYearDatabase(years);
+            bookID = db.createIDDatabase(bookID,titles);
+        }
 
 
         boolean exit = false;
@@ -25,7 +34,9 @@ public class Main {
                             1. Добавить книгу
                             2. Вывести всю информацию (ПОКА ЧТО ГОВНО)
                             3. Поиск по ID
-                            4. Поиск по автору (ПОКА ЧТО ГОВНО)
+                            4. Поиск по автору
+                            5. Поиск по годам
+                            6. Поиск по названию
                             0. Выйти из программы
                             """);
 
@@ -46,6 +57,8 @@ public class Main {
                 }
                 case 3 -> book.searchByID(bookID,titles,authors,years);
                 case 4 -> book.searchByAuthor(titles,authors,years);
+                case 5 -> book.searchByYear(titles,authors,years);
+                case 6 -> book.searchByTitle(titles,authors,years);
                 case 0 -> exit = true;
 
             }
