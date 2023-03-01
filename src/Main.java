@@ -8,10 +8,12 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) throws IOException {
         BookInfo book = new BookInfo();
-        Map<Integer,String> bookID = new HashMap<>();
         LinkedList<String> authors = new LinkedList<>();
         LinkedList<String> titles = new LinkedList<>();
         LinkedList<Integer> years = new LinkedList<>();
+
+        Map<Integer,String> bookID = new HashMap<>();
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("Желаете подключить тестовую базу данных?(д/н)");
@@ -41,28 +43,28 @@ public class Main {
                             0. Выйти из программы
                             """);
 
-            int menu = Integer.parseInt(reader.readLine());
+            String menu = reader.readLine();
 
             switch (menu) {
-                case 1 -> {
+                case "1" -> {
                     book.create();
                     authors.addLast(book.author);
                     titles.addLast(book.title);
                     years.addLast(book.year);
                     bookID.put(book.id, book.title);
                 }
-                case 2 -> {
+                case "2" -> {
                     System.out.println(authors);
                     System.out.println(titles);
                     System.out.println(years);
                 }
-                case 3 -> book.searchByID(bookID,titles,authors,years);
-                case 4 -> book.searchByAuthor(titles,authors,years);
-                case 5 -> book.searchByYear(titles,authors,years);
-                case 6 -> book.searchByTitle(titles,authors,years);
-                case 7 -> book.deleteByID(bookID,titles,authors,years);
-                case 0 -> exit = true;
-
+                case "3" -> book.searchByID(bookID,titles,authors,years);
+                case "4" -> book.searchByAuthor(titles,authors,years);
+                case "5" -> book.searchByYear(titles,authors,years);
+                case "6" -> book.searchByTitle(titles,authors,years);
+                case "7" -> book.deleteByID(bookID,titles,authors,years);
+                case "0" -> exit = true;
+                default -> System.out.println("Вы ввели неправильное значение") ;
             }
         } while (!exit);
     }

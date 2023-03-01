@@ -17,6 +17,8 @@ public class BookInfo {
     int year;
     int id;
 
+
+
     public void create() throws IOException {
         System.out.println("Введите название книги");
         title = reader.readLine();
@@ -26,6 +28,8 @@ public class BookInfo {
         year = Integer.parseInt(reader.readLine());
         System.out.println("Введите id книги");
         id = Integer.parseInt(reader.readLine());
+
+
     }
 
     public void searchByID(Map<Integer, String> bookID,
