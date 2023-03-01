@@ -1,12 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class BookInfo {
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -15,18 +10,18 @@ public class BookInfo {
     int year;
     int id;
 
-    public Map<Integer, BookModel> createDatabase(Map<Integer, BookModel> bookModel){
+    public Map<Integer, BookModel> createDatabase(Map<Integer, BookModel> bookModel) {
         BookModel book = new BookModel();
-        while(bookModel.size()<20){
-            book.title="Книга " + (bookModel.size()+1);
-            book.author="Автор " + (1+bookModel.size()%3);
-            book.year=2000+bookModel.size()%5;
-            bookModel.put(bookModel.size(),book);
+        while (bookModel.size() < 20) {
+            book.title = "Книга " + (bookModel.size() + 1);
+            book.author = "Автор " + (1 + bookModel.size() % 3);
+            book.year = 2000 + bookModel.size() % 5;
+            bookModel.put(bookModel.size(), book);
         }
         return bookModel;
     }
 
-    public Map<Integer, BookModel> create(Map<Integer,BookModel> bookModel) throws IOException {
+    public Map<Integer, BookModel> create(Map<Integer, BookModel> bookModel) throws IOException {
 
         BookModel book = new BookModel();
         System.out.println("Введите название книги");
@@ -50,21 +45,21 @@ public class BookInfo {
             }
         } while (yearcheck);
 
-        bookModel.put(bookModel.size(),book);
+        bookModel.put(bookModel.size(), book);
         return bookModel;
     }
 
-    public void display(Map<Integer,BookModel> bookModel){
-        BookModel book = new BookModel();
-        for (int i = 0; i < bookModel.size();i++) {
+    public void display(Map<Integer, BookModel> bookModel) {
+        BookModel book;
+        for (int i = 0; i < bookModel.size(); i++) {
             book = bookModel.get(i);
             System.out.println(i + ". " + book.author + " \"" + book.title + "\" " + book.year + ".г");
         }
     }
-    
+
     public void searchByID(Map<Integer, BookModel> bookID) throws IOException {
 
-        BookModel book = new BookModel();
+        BookModel book;
         System.out.println("Введите ID");
         id = Integer.parseInt(reader.readLine());
         if (bookID.containsKey(id)) {
@@ -76,108 +71,54 @@ public class BookInfo {
 
     }
 
-    public void searchByAuthor(LinkedList<String> titleList,
-                               LinkedList<String> authorList,
-                               LinkedList<Integer> yearList) throws IOException {
+    public void searchByAuthor(Map<Integer, BookModel> bookID) throws IOException {
+        BookModel book;
+        boolean empty = true;
         System.out.println("Введите имя автора");
-        //Поиск всех вхождений в список я спиздил
-        //https://www.techiedelight.com/ru/find-all-occurrences-of-value-list-java/
         author = reader.readLine();
-        List<Integer> indices;
-        indices = IntStream.range(0, authorList.size())
-                .filter(i -> Objects.equals(authorList.get(i), author))
-                .boxed().collect(Collectors.toList());
-        //Тут либо так, либо ебейший пердолинг с перебрасыванием
-        //значений между списками. Прошу не пиздить ссаными тряпками
-        if (authorList.contains(author)) {
-            System.out.println("Автор: " + author);
-            System.out.println("Книги: ");
-            for (int index : indices
-            ) {
-                System.out.print(titleList.get(index) + "|");
+        for (int i = 0; i < bookID.size(); i++) {
+            book = bookID.get(i);
+            if (author.equals(book.author)) {
+                System.out.println("Книга: " + book.title + " Год:" + book.year);
+                empty = false;
             }
-            System.out.println("\n");
-            System.out.println("Год написания: ");
-            for (int index : indices
-            ) {
-                System.out.print(yearList.get(index) + "|");
-            }
-            System.out.println("\n");
         }
+        if (empty) System.out.println("По Вашему запросу ничего не найдено");
     }
 
-    public void searchByYear(LinkedList<String> titleList,
-                             LinkedList<String> authorList,
-                             LinkedList<Integer> yearList) throws IOException {
-        System.out.println("Введите год написания книги");
-        //Поиск всех вхождений в список я спиздил
-        //https://www.techiedelight.com/ru/find-all-occurrences-of-value-list-java/
+    public void searchByYear(Map<Integer, BookModel> bookID) throws IOException {
+        BookModel book;
+        boolean empty = true;
+        System.out.println("Введите год издания");
         year = Integer.parseInt(reader.readLine());
-        List<Integer> indices;
-        indices = IntStream.range(0, yearList.size())
-                .filter(i -> Objects.equals(yearList.get(i), year))
-                .boxed().collect(Collectors.toList());
-        //Тут либо так, либо ебейший пердолинг с перебрасыванием
-        //значений между списками. Прошу не пиздить ссаными тряпками
-        if (yearList.contains(year)) {
-            System.out.println("Год написания: " + year);
-
-            System.out.println("Авторы: ");
-            for (int index : indices
-            ) {
-                System.out.print(authorList.get(index) + "|");
+        for (int i = 0; i < bookID.size(); i++) {
+            book = bookID.get(i);
+            if (year == book.year) {
+                System.out.println("Книга: " + book.title + " Автор: " + book.author);
+                empty = false;
             }
-            System.out.println("\n");
-
-            System.out.println("Книги: ");
-            for (int index : indices
-            ) {
-                System.out.print(titleList.get(index) + "|");
-            }
-            System.out.println("\n");
         }
+        if (empty) System.out.println("По Вашему запросу ничего не найдено");
     }
 
-    public void searchByTitle(LinkedList<String> titleList,
-                              LinkedList<String> authorList,
-                              LinkedList<Integer> yearList) throws IOException {
+    public void searchByTitle(Map<Integer, BookModel> bookID) throws IOException {
+        BookModel book;
+        boolean empty = true;
         System.out.println("Введите название книги");
-        //Поиск всех вхождений в список я спиздил
-        //https://www.techiedelight.com/ru/find-all-occurrences-of-value-list-java/
         title = reader.readLine();
-        List<Integer> indices;
-        indices = IntStream.range(0, titleList.size())
-                .filter(i -> Objects.equals(titleList.get(i), title))
-                .boxed().collect(Collectors.toList());
-        //Тут либо так, либо ебейший пердолинг с перебрасыванием
-        //значений между списками. Прошу не пиздить ссаными тряпками
-        if (titleList.contains(title)) {
-            System.out.println("Книга: " + title);
-            System.out.println("Автор: ");
-            for (int index : indices
-            ) {
-                System.out.print(authorList.get(index) + "|");
+        for (int i = 0; i < bookID.size(); i++) {
+            book = bookID.get(i);
+            if (title.equals(book.title)) {
+                System.out.println("Автор: " + book.author + " Год издания:" + book.year + " Идентефикатор: " + i);
+                empty = false;
             }
-            System.out.println("\n");
-
-            System.out.println("Год написания: ");
-            for (int index : indices
-            ) {
-                System.out.print(yearList.get(index) + "|");
-            }
-            System.out.println("\n");
         }
+        if (empty) System.out.println("По Вашему запросу ничего не найдено");
     }
 
-    public void deleteByID(Map<Integer, String> bookID,
-                           LinkedList<String> titleList,
-                           LinkedList<String> authorList,
-                           LinkedList<Integer> yearList) throws IOException {
+    public void deleteByID(Map<Integer, BookModel> bookID) throws IOException {
         System.out.println("Введите ID книги которую желаете удалить");
         id = Integer.parseInt(reader.readLine());
-        authorList.remove(titleList.indexOf(bookID.get(id)));
-        yearList.remove(titleList.indexOf(bookID.get(id)));
-        titleList.remove(titleList.indexOf(bookID.get(id)));
         bookID.remove(id);
     }
 

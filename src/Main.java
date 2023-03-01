@@ -44,10 +44,10 @@ public class Main {
                 case "1" -> book.create(bookID);
                 case "2" -> book.display(bookID);
                 case "3" -> book.searchByID(bookID);
-                case "4" -> book.searchByAuthor(titles,authors,years);
-                case "5" -> book.searchByYear(titles,authors,years);
-                case "6" -> book.searchByTitle(titles,authors,years);
-                //case "7" -> book.deleteByID(bookID,titles,authors,years);
+                case "4" -> book.searchByAuthor(bookID);
+                case "5" -> book.searchByYear(bookID);
+                case "6" -> book.searchByTitle(bookID);
+                case "7" -> book.deleteByID(bookID);
                 case "0" -> exit = true;
                 default -> System.out.println("Вы ввели неправильное значение") ;
             }
