@@ -43,7 +43,7 @@ public class Main {
             switch (menu) {
                 case "1" -> book.create(bookID);
                 case "2" -> book.display(bookID);
-                //case "3" -> book.searchByID(bookID,titles,authors,years);
+                case "3" -> book.searchByID(bookID);
                 case "4" -> book.searchByAuthor(titles,authors,years);
                 case "5" -> book.searchByYear(titles,authors,years);
                 case "6" -> book.searchByTitle(titles,authors,years);

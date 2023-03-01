@@ -62,18 +62,17 @@ public class BookInfo {
         }
     }
     
-    public void searchByID(Map<Integer, String> bookID,
-                           LinkedList<String> titleList,
-                           LinkedList<String> authorList,
-                           LinkedList<Integer> yearList) throws IOException {
+    public void searchByID(Map<Integer, BookModel> bookID) throws IOException {
+
+        BookModel book = new BookModel();
         System.out.println("Введите ID");
         id = Integer.parseInt(reader.readLine());
         if (bookID.containsKey(id)) {
-            System.out.println("Автор: " + authorList.get(titleList.indexOf(bookID.get(id))) +
-                    "\nКнига: " + bookID.get(id) +
-                    "\nГод: " + yearList.get(titleList.indexOf(bookID.get(id))));
+            book = bookID.get(id);
+            System.out.println("Автор: " + book.author +
+                    "\nКнига: " + book.title +
+                    "\nГод: " + book.year);
         }
-
 
     }
 
