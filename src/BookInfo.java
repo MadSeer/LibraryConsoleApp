@@ -18,16 +18,33 @@ public class BookInfo {
     int id;
 
 
-
     public void create() throws IOException {
+
         System.out.println("Введите название книги");
         title = reader.readLine();
         System.out.println("Введите автора книги");
         author = reader.readLine();
         System.out.println("Введите год издания книги");
-        year = Integer.parseInt(reader.readLine());
+
+        boolean yearcheck = true;
+        do {
+            try {
+                year = Integer.parseInt(reader.readLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Введите число, а не текст");
+                continue;
+            }
+            if (year > 0) {
+                yearcheck = false;
+            } else {
+                System.out.println("Вы ввели отрицательный год издания");
+            }
+        } while (yearcheck);
+
         System.out.println("Введите id книги");
         id = Integer.parseInt(reader.readLine());
+
+
 
 
     }
@@ -60,16 +77,16 @@ public class BookInfo {
                 .boxed().collect(Collectors.toList());
         //Тут либо так, либо ебейший пердолинг с перебрасыванием
         //значений между списками. Прошу не пиздить ссаными тряпками
-        if (authorList.contains(author)){
+        if (authorList.contains(author)) {
             System.out.println("Автор: " + author);
             System.out.println("Книги: ");
-            for (int index: indices
-                 ) {
+            for (int index : indices
+            ) {
                 System.out.print(titleList.get(index) + "|");
             }
             System.out.println("\n");
             System.out.println("Год написания: ");
-            for (int index: indices
+            for (int index : indices
             ) {
                 System.out.print(yearList.get(index) + "|");
             }
@@ -78,8 +95,8 @@ public class BookInfo {
     }
 
     public void searchByYear(LinkedList<String> titleList,
-                               LinkedList<String> authorList,
-                               LinkedList<Integer> yearList) throws IOException {
+                             LinkedList<String> authorList,
+                             LinkedList<Integer> yearList) throws IOException {
         System.out.println("Введите год написания книги");
         //Поиск всех вхождений в список я спиздил
         //https://www.techiedelight.com/ru/find-all-occurrences-of-value-list-java/
@@ -90,18 +107,18 @@ public class BookInfo {
                 .boxed().collect(Collectors.toList());
         //Тут либо так, либо ебейший пердолинг с перебрасыванием
         //значений между списками. Прошу не пиздить ссаными тряпками
-        if (yearList.contains(year)){
+        if (yearList.contains(year)) {
             System.out.println("Год написания: " + year);
 
             System.out.println("Авторы: ");
-            for (int index: indices
+            for (int index : indices
             ) {
                 System.out.print(authorList.get(index) + "|");
             }
             System.out.println("\n");
 
             System.out.println("Книги: ");
-            for (int index: indices
+            for (int index : indices
             ) {
                 System.out.print(titleList.get(index) + "|");
             }
@@ -110,8 +127,8 @@ public class BookInfo {
     }
 
     public void searchByTitle(LinkedList<String> titleList,
-                             LinkedList<String> authorList,
-                             LinkedList<Integer> yearList) throws IOException {
+                              LinkedList<String> authorList,
+                              LinkedList<Integer> yearList) throws IOException {
         System.out.println("Введите название книги");
         //Поиск всех вхождений в список я спиздил
         //https://www.techiedelight.com/ru/find-all-occurrences-of-value-list-java/
@@ -122,17 +139,17 @@ public class BookInfo {
                 .boxed().collect(Collectors.toList());
         //Тут либо так, либо ебейший пердолинг с перебрасыванием
         //значений между списками. Прошу не пиздить ссаными тряпками
-        if (titleList.contains(title)){
+        if (titleList.contains(title)) {
             System.out.println("Книга: " + title);
             System.out.println("Автор: ");
-            for (int index: indices
+            for (int index : indices
             ) {
                 System.out.print(authorList.get(index) + "|");
             }
             System.out.println("\n");
 
             System.out.println("Год написания: ");
-            for (int index: indices
+            for (int index : indices
             ) {
                 System.out.print(yearList.get(index) + "|");
             }
