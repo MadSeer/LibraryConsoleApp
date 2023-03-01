@@ -9,46 +9,59 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class BookInfo {
-
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
     String author;
     String title;
     int year;
     int id;
 
+    public Map<Integer, BookModel> createDatabase(Map<Integer, BookModel> bookModel){
+        BookModel book = new BookModel();
+        while(bookModel.size()<20){
+            book.title="Книга " + (bookModel.size()+1);
+            book.author="Автор " + (1+bookModel.size()%3);
+            book.year=2000+bookModel.size()%5;
+            bookModel.put(bookModel.size(),book);
+        }
+        return bookModel;
+    }
 
-    public void create() throws IOException {
+    public Map<Integer, BookModel> create(Map<Integer,BookModel> bookModel) throws IOException {
 
+        BookModel book = new BookModel();
         System.out.println("Введите название книги");
-        title = reader.readLine();
+        book.title = reader.readLine();
         System.out.println("Введите автора книги");
-        author = reader.readLine();
+        book.author = reader.readLine();
         System.out.println("Введите год издания книги");
 
         boolean yearcheck = true;
         do {
             try {
-                year = Integer.parseInt(reader.readLine());
+                book.year = Integer.parseInt(reader.readLine());
             } catch (NumberFormatException e) {
                 System.out.println("Введите число, а не текст");
                 continue;
             }
-            if (year > 0) {
+            if (book.year > 0) {
                 yearcheck = false;
             } else {
                 System.out.println("Вы ввели отрицательный год издания");
             }
         } while (yearcheck);
 
-        System.out.println("Введите id книги");
-        id = Integer.parseInt(reader.readLine());
-
-
-
-
+        bookModel.put(bookModel.size(),book);
+        return bookModel;
     }
 
+    public void display(Map<Integer,BookModel> bookModel){
+        BookModel book = new BookModel();
+        for (int i = 0; i < bookModel.size();i++) {
+            book = bookModel.get(i);
+            System.out.println(i + ". " + book.author + " \"" + book.title + "\" " + book.year + ".г");
+        }
+    }
+    
     public void searchByID(Map<Integer, String> bookID,
                            LinkedList<String> titleList,
                            LinkedList<String> authorList,
