@@ -53,7 +53,8 @@ public class BookInfo {
         for (int i = 0; i < bookModel.size(); i++) {
             BookModel book;
             book = bookModel.get(i);
-            if(bookModel.containsKey(i))System.out.println(i + ". " + book.author + " \"" + book.title + "\" " + book.year + ".г");
+            if (bookModel.containsKey(i))
+                System.out.println(i + ". " + book.author + " \"" + book.title + "\" " + book.year + ".г");
         } //Это костыль, я хз как тут использовать правильно foreach.
     }
 
@@ -75,26 +76,19 @@ public class BookInfo {
         List<BookModel> models;
         System.out.println("Введите имя автора");
         author = reader.readLine();
-        models = bookID.values().stream().filter(bookModel -> { return bookModel.author.equals(author);}).toList();
-        if(!models.isEmpty()){
-            models.forEach(i ->{System.out.println("Книга: " + i.title + " Год:" + i.year);});
+        models = bookID.values().stream().filter(bookModel -> bookModel.author.equals(author)).toList();
+        if (!models.isEmpty()) {
+            models.forEach(i -> System.out.println("Книга: " + i.title + " Год:" + i.year));
         } else System.out.println("По Вашему запросу ничего не найдено");
     }
 
     public void searchByYear(Map<Integer, BookModel> bookID) throws IOException {
-        BookModel book;
         List<BookModel> models;
-        boolean empty = true;
         System.out.println("Введите год издания");
         year = Integer.parseInt(reader.readLine());
-        for (int i = 0; i < bookID.size(); i++) {
-            book = bookID.get(i);
-            if (year == book.year) {
-                System.out.println("Книга: " + book.title + " Автор: " + book.author);
-                empty = false;
-            }
-        }
-        if (empty) System.out.println("По Вашему запросу ничего не найдено");
+        models = bookID.values().stream().filter(bookModel -> bookModel.year == year).toList();
+        if(!models.isEmpty()){models.forEach(i->System.out.println("Книга: " + i.title + " Автор: " + i.author));}
+        else System.out.println("По Вашему запросу ничего не найдено");
     }
 
     public void searchByTitle(Map<Integer, BookModel> bookID) throws IOException {
