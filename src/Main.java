@@ -30,6 +30,7 @@ public class Main {
                             5. Поиск по годам
                             6. Поиск по названию
                             7. Удаление по ID
+                            8. Создать TXT
                             0. Выйти из программы
                             """);
 
@@ -43,6 +44,7 @@ public class Main {
                 case "5" -> book.searchByYear(bookID);
                 case "6" -> book.searchByTitle(bookID);
                 case "7" -> book.deleteByID(bookID);
+                case "8" -> book.createTXT(bookID);
                 case "0" -> exit = true;
                 default -> System.out.println("Вы ввели неправильное значение") ;
             }

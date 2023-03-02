@@ -1,8 +1,8 @@
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BookInfo {
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -110,6 +110,18 @@ public class BookInfo {
         System.out.println("Введите ID книги которую желаете удалить");
         id = Integer.parseInt(reader.readLine());
         bookID.remove(id);
+    }
+
+    public void createTXT(Map<Integer,BookModel> bookID) throws IOException {
+        FileWriter writer = new FileWriter("Library.txt",true);
+        List<BookModel> model = bookID.values().stream().toList();
+        for (BookModel book: model
+             ) {
+            writer.write(book.author + " \"" + book.title + "\" " + book.year + ".г");
+            writer.append("\r\n");
+        }
+        writer.flush();
+        writer.close();
     }
 
 }
