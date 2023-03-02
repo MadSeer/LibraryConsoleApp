@@ -98,10 +98,10 @@ public class BookInfo {
         boolean empty = true;
         System.out.println("Введите название книги");
         title = reader.readLine();
-        for (int i = 0; i < bookID.size(); i++) {
-            book = bookID.get(i);
+        for (var ids: bookID.entrySet()) {
+            book = bookID.get(ids.getKey());
             if (title.equals(book.title)) {
-                System.out.println("Автор: " + book.author + " Год издания:" + book.year + " Идентефикатор: " + i);
+                System.out.println("Автор: " + book.author + " Год издания:" + book.year + " Идентефикатор: " + ids.getKey());
                 empty = false;
             }
         }
