@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Map;
 
 public class BookInfo {
@@ -11,8 +12,8 @@ public class BookInfo {
     int id;
 
     public Map<Integer, BookModel> createDatabase(Map<Integer, BookModel> bookModel) {
-        BookModel book = new BookModel();
         while (bookModel.size() < 20) {
+            BookModel book = new BookModel();
             book.title = "Книга " + (bookModel.size() + 1);
             book.author = "Автор " + (1 + bookModel.size() % 3);
             book.year = 2000 + bookModel.size() % 5;
@@ -21,7 +22,7 @@ public class BookInfo {
         return bookModel;
     }
 
-    public Map<Integer, BookModel> create(Map<Integer, BookModel> bookModel) throws IOException {
+    public void create(Map<Integer, BookModel> bookModel) throws IOException {
 
         BookModel book = new BookModel();
         System.out.println("Введите название книги");
@@ -46,15 +47,14 @@ public class BookInfo {
         } while (yearcheck);
 
         bookModel.put(bookModel.size(), book);
-        return bookModel;
     }
 
     public void display(Map<Integer, BookModel> bookModel) {
-        BookModel book;
         for (int i = 0; i < bookModel.size(); i++) {
+            BookModel book;
             book = bookModel.get(i);
-            System.out.println(i + ". " + book.author + " \"" + book.title + "\" " + book.year + ".г");
-        }
+            if(bookModel.containsKey(i))System.out.println(i + ". " + book.author + " \"" + book.title + "\" " + book.year + ".г");
+        } //Это костыль, я хз как тут использовать правильно foreach.
     }
 
     public void searchByID(Map<Integer, BookModel> bookID) throws IOException {
@@ -72,22 +72,18 @@ public class BookInfo {
     }
 
     public void searchByAuthor(Map<Integer, BookModel> bookID) throws IOException {
-        BookModel book;
-        boolean empty = true;
+        List<BookModel> models;
         System.out.println("Введите имя автора");
         author = reader.readLine();
-        for (int i = 0; i < bookID.size(); i++) {
-            book = bookID.get(i);
-            if (author.equals(book.author)) {
-                System.out.println("Книга: " + book.title + " Год:" + book.year);
-                empty = false;
-            }
-        }
-        if (empty) System.out.println("По Вашему запросу ничего не найдено");
+        models = bookID.values().stream().filter(bookModel -> { return bookModel.author.equals(author);}).toList();
+        if(!models.isEmpty()){
+            models.forEach(i ->{System.out.println("Книга: " + i.title + " Год:" + i.year);});
+        } else System.out.println("По Вашему запросу ничего не найдено");
     }
 
     public void searchByYear(Map<Integer, BookModel> bookID) throws IOException {
         BookModel book;
+        List<BookModel> models;
         boolean empty = true;
         System.out.println("Введите год издания");
         year = Integer.parseInt(reader.readLine());
