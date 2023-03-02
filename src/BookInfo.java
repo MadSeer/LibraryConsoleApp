@@ -2,7 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class BookInfo {
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -87,8 +88,9 @@ public class BookInfo {
         System.out.println("Введите год издания");
         year = Integer.parseInt(reader.readLine());
         models = bookID.values().stream().filter(bookModel -> bookModel.year == year).toList();
-        if(!models.isEmpty()){models.forEach(i->System.out.println("Книга: " + i.title + " Автор: " + i.author));}
-        else System.out.println("По Вашему запросу ничего не найдено");
+        if (!models.isEmpty()) {
+            models.forEach(i -> System.out.println("Книга: " + i.title + " Автор: " + i.author));
+        } else System.out.println("По Вашему запросу ничего не найдено");
     }
 
     public void searchByTitle(Map<Integer, BookModel> bookID) throws IOException {
@@ -112,16 +114,46 @@ public class BookInfo {
         bookID.remove(id);
     }
 
-    public void createTXT(Map<Integer,BookModel> bookID) throws IOException {
-        FileWriter writer = new FileWriter("Library.txt",true);
+    public void createTXT(Map<Integer, BookModel> bookID) throws IOException {
+        FileWriter writer = new FileWriter("Library.txt", true);
         List<BookModel> model = bookID.values().stream().toList();
-        for (BookModel book: model
-             ) {
+        for (BookModel book : model
+        ) {
             writer.write(book.author + " \"" + book.title + "\" " + book.year + ".г");
             writer.append("\r\n");
         }
         writer.flush();
         writer.close();
+    }
+
+    public void edit(Map<Integer, BookModel> bookID) throws IOException {
+        System.out.println("Введите ID книги, которую вы хотите редактировать");
+        id = Integer.parseInt(reader.readLine());
+        BookModel model = bookID.get(id);
+        System.out.println("""
+                Что Вы хотите изменить?
+                1. Название
+                2. Автор
+                3. Год
+                Другая клавиша - главное меню
+                """);
+        String changeMenu = reader.readLine();
+        switch (changeMenu) {
+            case ("1") -> {
+                System.out.println("Старое название \"" + model.title + "\", введите новое");
+                model.title = reader.readLine();
+            }
+            case ("2") -> {
+                System.out.println("Старый автор \"" + model.author + "\", введите нового");
+                model.author = reader.readLine();
+            }
+            case ("3") -> {
+                System.out.println("Старый год издания \"" + model.year + "\", введите новый");
+                model.year = Integer.parseInt(reader.readLine());
+            }
+            default -> System.out.println("Возврат в главное меню");
+        }
+        bookID.put(id, model);
     }
 
 }
