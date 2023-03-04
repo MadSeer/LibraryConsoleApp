@@ -1,172 +1,159 @@
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class BookInfo {
-
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
     String author;
     String title;
     int year;
     int id;
 
+    public Map<Integer, BookModel> createDatabase(Map<Integer, BookModel> bookModel) {
+        while (bookModel.size() < 20) {
+            BookModel book = new BookModel();
+            book.title = "Книга " + (bookModel.size() + 1);
+            book.author = "Автор " + (1 + bookModel.size() % 3);
+            book.year = 2000 + bookModel.size() % 5;
+            bookModel.put(bookModel.size(), book);
+        }
+        return bookModel;
+    }
 
-    public void create() throws IOException {
+    public void create(Map<Integer, BookModel> bookModel) throws IOException {
 
+        BookModel book = new BookModel();
         System.out.println("Введите название книги");
-        title = reader.readLine();
+        book.title = reader.readLine();
         System.out.println("Введите автора книги");
-        author = reader.readLine();
+        book.author = reader.readLine();
         System.out.println("Введите год издания книги");
 
         boolean yearcheck = true;
         do {
             try {
-                year = Integer.parseInt(reader.readLine());
+                book.year = Integer.parseInt(reader.readLine());
             } catch (NumberFormatException e) {
                 System.out.println("Введите число, а не текст");
                 continue;
             }
-            if (year > 0) {
+            if (book.year > 0) {
                 yearcheck = false;
             } else {
                 System.out.println("Вы ввели отрицательный год издания");
             }
         } while (yearcheck);
 
-        System.out.println("Введите id книги");
-        id = Integer.parseInt(reader.readLine());
-
-
-
-
+        bookModel.put(bookModel.size(), book);
     }
 
-    public void searchByID(Map<Integer, String> bookID,
-                           LinkedList<String> titleList,
-                           LinkedList<String> authorList,
-                           LinkedList<Integer> yearList) throws IOException {
+    public void display(Map<Integer, BookModel> bookModel) {
+        for (int i = 0; i < bookModel.size(); i++) {
+            BookModel book;
+            book = bookModel.get(i);
+            if (bookModel.containsKey(i))
+                System.out.println(i + ". " + book.author + " \"" + book.title + "\" " + book.year + ".г");
+        } //Это костыль, я хз как тут использовать правильно foreach.
+    }
+
+    public void searchByID(Map<Integer, BookModel> bookID) throws IOException {
+
+        BookModel book;
         System.out.println("Введите ID");
         id = Integer.parseInt(reader.readLine());
         if (bookID.containsKey(id)) {
-            System.out.println("Автор: " + authorList.get(titleList.indexOf(bookID.get(id))) +
-                    "\nКнига: " + bookID.get(id) +
-                    "\nГод: " + yearList.get(titleList.indexOf(bookID.get(id))));
+            book = bookID.get(id);
+            System.out.println("Автор: " + book.author +
+                    "\nКнига: " + book.title +
+                    "\nГод: " + book.year);
         }
-
 
     }
 
-    public void searchByAuthor(LinkedList<String> titleList,
-                               LinkedList<String> authorList,
-                               LinkedList<Integer> yearList) throws IOException {
+    public void searchByAuthor(Map<Integer, BookModel> bookID) throws IOException {
+        List<BookModel> models;
         System.out.println("Введите имя автора");
-        //Поиск всех вхождений в список я спиздил
-        //https://www.techiedelight.com/ru/find-all-occurrences-of-value-list-java/
         author = reader.readLine();
-        List<Integer> indices;
-        indices = IntStream.range(0, authorList.size())
-                .filter(i -> Objects.equals(authorList.get(i), author))
-                .boxed().collect(Collectors.toList());
-        //Тут либо так, либо ебейший пердолинг с перебрасыванием
-        //значений между списками. Прошу не пиздить ссаными тряпками
-        if (authorList.contains(author)) {
-            System.out.println("Автор: " + author);
-            System.out.println("Книги: ");
-            for (int index : indices
-            ) {
-                System.out.print(titleList.get(index) + "|");
-            }
-            System.out.println("\n");
-            System.out.println("Год написания: ");
-            for (int index : indices
-            ) {
-                System.out.print(yearList.get(index) + "|");
-            }
-            System.out.println("\n");
-        }
+        models = bookID.values().stream().filter(bookModel -> bookModel.author.equals(author)).toList();
+        if (!models.isEmpty()) {
+            models.forEach(i -> System.out.println("Книга: " + i.title + " Год:" + i.year));
+        } else System.out.println("По Вашему запросу ничего не найдено");
     }
 
-    public void searchByYear(LinkedList<String> titleList,
-                             LinkedList<String> authorList,
-                             LinkedList<Integer> yearList) throws IOException {
-        System.out.println("Введите год написания книги");
-        //Поиск всех вхождений в список я спиздил
-        //https://www.techiedelight.com/ru/find-all-occurrences-of-value-list-java/
+    public void searchByYear(Map<Integer, BookModel> bookID) throws IOException {
+        List<BookModel> models;
+        System.out.println("Введите год издания");
         year = Integer.parseInt(reader.readLine());
-        List<Integer> indices;
-        indices = IntStream.range(0, yearList.size())
-                .filter(i -> Objects.equals(yearList.get(i), year))
-                .boxed().collect(Collectors.toList());
-        //Тут либо так, либо ебейший пердолинг с перебрасыванием
-        //значений между списками. Прошу не пиздить ссаными тряпками
-        if (yearList.contains(year)) {
-            System.out.println("Год написания: " + year);
-
-            System.out.println("Авторы: ");
-            for (int index : indices
-            ) {
-                System.out.print(authorList.get(index) + "|");
-            }
-            System.out.println("\n");
-
-            System.out.println("Книги: ");
-            for (int index : indices
-            ) {
-                System.out.print(titleList.get(index) + "|");
-            }
-            System.out.println("\n");
-        }
+        models = bookID.values().stream().filter(bookModel -> bookModel.year == year).toList();
+        if (!models.isEmpty()) {
+            models.forEach(i -> System.out.println("Книга: " + i.title + " Автор: " + i.author));
+        } else System.out.println("По Вашему запросу ничего не найдено");
     }
 
-    public void searchByTitle(LinkedList<String> titleList,
-                              LinkedList<String> authorList,
-                              LinkedList<Integer> yearList) throws IOException {
+    public void searchByTitle(Map<Integer, BookModel> bookID) throws IOException {
+        BookModel book;
+        boolean empty = true;
         System.out.println("Введите название книги");
-        //Поиск всех вхождений в список я спиздил
-        //https://www.techiedelight.com/ru/find-all-occurrences-of-value-list-java/
         title = reader.readLine();
-        List<Integer> indices;
-        indices = IntStream.range(0, titleList.size())
-                .filter(i -> Objects.equals(titleList.get(i), title))
-                .boxed().collect(Collectors.toList());
-        //Тут либо так, либо ебейший пердолинг с перебрасыванием
-        //значений между списками. Прошу не пиздить ссаными тряпками
-        if (titleList.contains(title)) {
-            System.out.println("Книга: " + title);
-            System.out.println("Автор: ");
-            for (int index : indices
-            ) {
-                System.out.print(authorList.get(index) + "|");
+        for (var ids: bookID.entrySet()) {
+            book = bookID.get(ids.getKey());
+            if (title.equals(book.title)) {
+                System.out.println("Автор: " + book.author + " Год издания:" + book.year + " Идентефикатор: " + ids.getKey());
+                empty = false;
             }
-            System.out.println("\n");
-
-            System.out.println("Год написания: ");
-            for (int index : indices
-            ) {
-                System.out.print(yearList.get(index) + "|");
-            }
-            System.out.println("\n");
         }
+        if (empty) System.out.println("По Вашему запросу ничего не найдено");
     }
 
-    public void deleteByID(Map<Integer, String> bookID,
-                           LinkedList<String> titleList,
-                           LinkedList<String> authorList,
-                           LinkedList<Integer> yearList) throws IOException {
+    public void deleteByID(Map<Integer, BookModel> bookID) throws IOException {
         System.out.println("Введите ID книги которую желаете удалить");
         id = Integer.parseInt(reader.readLine());
-        authorList.remove(titleList.indexOf(bookID.get(id)));
-        yearList.remove(titleList.indexOf(bookID.get(id)));
-        titleList.remove(titleList.indexOf(bookID.get(id)));
         bookID.remove(id);
+    }
+
+    public void createTXT(Map<Integer, BookModel> bookID) throws IOException {
+        FileWriter writer = new FileWriter("Library.txt", true);
+        List<BookModel> model = bookID.values().stream().toList();
+        for (BookModel book : model
+        ) {
+            writer.write(book.author + " \"" + book.title + "\" " + book.year + ".г");
+            writer.append("\r\n");
+        }
+        writer.flush();
+        writer.close();
+    }
+
+    public void edit(Map<Integer, BookModel> bookID) throws IOException {
+        System.out.println("Введите ID книги, которую вы хотите редактировать");
+        id = Integer.parseInt(reader.readLine());
+        BookModel model = bookID.get(id);
+        System.out.println("""
+                Что Вы хотите изменить?
+                1. Название
+                2. Автор
+                3. Год
+                Другая клавиша - главное меню
+                """);
+        String changeMenu = reader.readLine();
+        switch (changeMenu) {
+            case ("1") -> {
+                System.out.println("Старое название \"" + model.title + "\", введите новое");
+                model.title = reader.readLine();
+            }
+            case ("2") -> {
+                System.out.println("Старый автор \"" + model.author + "\", введите нового");
+                model.author = reader.readLine();
+            }
+            case ("3") -> {
+                System.out.println("Старый год издания \"" + model.year + "\", введите новый");
+                model.year = Integer.parseInt(reader.readLine());
+            }
+            default -> System.out.println("Возврат в главное меню");
+        }
+        bookID.put(id, model);
     }
 
 }
